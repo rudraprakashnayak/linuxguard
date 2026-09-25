@@ -1,0 +1,38 @@
+# LinuxGuard Demo Configuration
+# This file demonstrates the configuration format with harmless demo processes.
+
+[global]
+socket_path = /tmp/linuxguard.sock
+pid_file = /tmp/linuxguard.pid
+log_file = /tmp/linuxguard.log
+log_level = info
+monitor_interval_sec = 5
+
+[service sleeper]
+name = sleeper
+command = sleep 3600
+working_dir = /
+auto_restart = true
+max_restarts = 3
+restart_backoff_sec = 2
+restart_backoff_max_sec = 30
+
+[service counter]
+name = counter
+command = sh -c "while true; do echo tick; sleep 1; done"
+working_dir = /tmp
+auto_restart = true
+max_restarts = 5
+restart_backoff_sec = 3
+restart_backoff_max_sec = 60
+depends_on = sleeper
+
+[service logger]
+name = logger
+command = sh -c "while true; do date >> /tmp/linuxguard_demo.log; sleep 5; done"
+working_dir = /tmp
+auto_restart = true
+max_restarts = 5
+restart_backoff_sec = 5
+restart_backoff_max_sec = 120
+depends_on = sleeper, counter

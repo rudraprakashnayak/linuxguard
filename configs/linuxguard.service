@@ -1,0 +1,19 @@
+[Unit]
+Description=LinuxGuard Process Supervisor
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/linuxguard --daemon /etc/linuxguard/demo.service
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
