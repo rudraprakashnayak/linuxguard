@@ -1,6 +1,21 @@
 # LinuxGuard
 
-A lightweight Linux process/service supervisor written in C++17.
+A lightweight Linux process/service supervisor written in C++17 that keeps your critical services running automatically.
+
+## Project Description
+
+LinuxGuard is a background daemon that manages the lifecycle of Linux processes and services. It monitors running services, detects failures, and automatically restarts them with configurable backoff policies. Built for embedded Linux systems and servers alike, it provides dependency-aware startup ordering, real-time CPU/RAM monitoring, and a simple CLI for control — all with zero external dependencies.
+
+Think of it as a minimal, self-contained alternative to systemd's service management, designed for environments where you need fine-grained control over process supervision without the overhead of a full init system.
+
+## Outcomes & Results
+
+- **Zero-downtime service management**: Services are automatically restarted on failure with exponential backoff, preventing crash loops while ensuring availability
+- **Dependency-aware startup**: Services start in correct topological order (e.g., database before web server), and shut down in reverse — no manual ordering needed
+- **Resource protection**: CPU and RAM limits per service prevent any single process from starving the system, with alerts when thresholds are breached
+- **Graceful shutdown**: SIGTERM → wait → SIGKILL escalation ensures processes get a chance to clean up before being force-killed
+- **Thread-safe IPC**: Unix domain socket protocol allows multiple CLI clients to query and control the daemon concurrently without race conditions
+- **Production-ready**: systemd integration, PID file management, structured logging with timestamps, and comprehensive unit tests (19 test cases across process, config, and dependency modules)
 
 ## Features
 
